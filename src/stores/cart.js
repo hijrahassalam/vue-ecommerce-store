@@ -12,12 +12,8 @@ export const useCartStore = defineStore('cart', {
 
   getters: {
     isEmpty: (state) => state.itemCount === 0,
-    formattedSubtotal: (state) => {
-      return new Intl.NumberFormat('en-US', {
-        style: 'currency',
-        currency: 'USD',
-      }).format(state.subtotal)
-    },
+    formattedSubtotal: (state) =>
+      new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(state.subtotal),
   },
 
   actions: {
@@ -25,11 +21,11 @@ export const useCartStore = defineStore('cart', {
       this.loading = true
       this.error = null
       try {
-        const response = await api.get('/cart')
-        const data = response.data.data
-        this.items = data.items || []
-        this.itemCount = data.item_count || 0
-        this.subtotal = parseFloat(data.subtotal) || 0
+        const res = await api.get('/cart')
+        const d = res.data.data
+        this.items = d.items || []
+        this.itemCount = d.item_count || 0
+        this.subtotal = parseFloat(d.subtotal) || 0
       } catch (err) {
         this.error = err.response?.data?.message || 'Failed to load cart'
       } finally {
@@ -41,16 +37,12 @@ export const useCartStore = defineStore('cart', {
       this.loading = true
       this.error = null
       try {
-        const response = await api.post('/cart/items', {
-          product_id: productId,
-          quantity,
-        })
+        await api.post('/cart/items', { product_id: productId, quantity })
         await this.fetchCart()
-        return { success: true, message: response.data.message }
+        return { success: true }
       } catch (err) {
-        const msg = err.response?.data?.message || 'Failed to add item'
-        this.error = msg
-        return { success: false, message: msg }
+        this.error = err.response?.data?.message || 'Failed to add item'
+        return { success: false, message: this.error }
       } finally {
         this.loading = false
       }
@@ -64,9 +56,7 @@ export const useCartStore = defineStore('cart', {
         await this.fetchCart()
         return { success: true }
       } catch (err) {
-        const msg = err.response?.data?.message || 'Failed to update item'
-        this.error = msg
-        return { success: false, message: msg }
+        return { success: false, message: err.response?.data?.message || 'Failed to update' }
       } finally {
         this.loading = false
       }
@@ -74,15 +64,12 @@ export const useCartStore = defineStore('cart', {
 
     async removeItem(itemId) {
       this.loading = true
-      this.error = null
       try {
         await api.delete(`/cart/items/${itemId}`)
         await this.fetchCart()
         return { success: true }
       } catch (err) {
-        const msg = err.response?.data?.message || 'Failed to remove item'
-        this.error = msg
-        return { success: false, message: msg }
+        return { success: false, message: err.response?.data?.message || 'Failed to remove' }
       } finally {
         this.loading = false
       }
@@ -90,7 +77,6 @@ export const useCartStore = defineStore('cart', {
 
     async clearCart() {
       this.loading = true
-      this.error = null
       try {
         await api.delete('/cart')
         this.items = []
@@ -98,9 +84,7 @@ export const useCartStore = defineStore('cart', {
         this.subtotal = 0
         return { success: true }
       } catch (err) {
-        const msg = err.response?.data?.message || 'Failed to clear cart'
-        this.error = msg
-        return { success: false, message: msg }
+        return { success: false, message: err.response?.data?.message || 'Failed to clear' }
       } finally {
         this.loading = false
       }

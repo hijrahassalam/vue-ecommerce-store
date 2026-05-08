@@ -17,13 +17,13 @@ export const useProductStore = defineStore('products', {
       try {
         const params = { page }
         if (search) params.search = search
-        const response = await api.get('/products', { params })
-        this.products = response.data.data
+        const res = await api.get('/products', { params })
+        this.products = res.data.data
         this.pagination = {
-          currentPage: response.data.current_page,
-          lastPage: response.data.last_page,
-          perPage: response.data.per_page,
-          total: response.data.total,
+          currentPage: res.data.current_page,
+          lastPage: res.data.last_page,
+          perPage: res.data.per_page,
+          total: res.data.total,
         }
       } catch (err) {
         this.error = 'Failed to load products'
@@ -37,8 +37,8 @@ export const useProductStore = defineStore('products', {
       this.error = null
       this.currentProduct = null
       try {
-        const response = await api.get(`/products/${id}`)
-        this.currentProduct = response.data.data
+        const res = await api.get(`/products/${id}`)
+        this.currentProduct = res.data.data
       } catch (err) {
         this.error = 'Product not found'
       } finally {
