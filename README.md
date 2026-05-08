@@ -1,24 +1,26 @@
 # Vue E-Commerce Store
 
-**🌐 Live Store:** [vue-ecommerce-store-fe.netlify.app](https://vue-ecommerce-store-fe.netlify.app)
+**🛒 Live Store:** [vue-ecommerce-store-fe.netlify.app](https://vue-ecommerce-store-fe.netlify.app)
 
-Modern e-commerce frontend built with **Vue 3**, **Tailwind CSS**, and **Pinia**.
+**🔗 API Backend:** [laravel-ecommerce-api-production.up.railway.app](https://laravel-ecommerce-api-production.up.railway.app/api/products)
+
+Modern e-commerce frontend — Vue 3 · Tailwind CSS · Pinia · Vite · Netlify auto-deploy
 
 ---
 
 ## 🏗️ Architecture
 
 ```
-vue-ecommerce-store (FE)          laravel-ecommerce-api (BE)
-https://github.com/                 https://github.com/
-  hijrahassalam/vue-ecommerce-store  hijrahassalam/laravel-ecommerce-api
-       ↓                                    ↓
-  Netlify (auto-deploy)             Railway (Docker + Neon PostgreSQL)
-       ↓                                    ↓
-  https://vue-ecommerce-store-fe.    https://laravel-ecommerce-api-production.
-       netlify.app                        up.railway.app
-       ↓                                    ↓
-       └──────── HTTPS API ─────────────────┘
+vue-ecommerce-store (FE)            laravel-ecommerce-api (BE)
+https://github.com/                   https://github.com/
+  hijrahassalam/vue-ecommerce-store   hijrahassalam/laravel-ecommerce-api
+       ↓                                      ↓
+  Netlify (auto-deploy)                Railway (Docker + Neon PostgreSQL)
+       ↓                                      ↓
+  https://vue-ecommerce-store-fe.       https://laravel-ecommerce-api-production.
+       netlify.app                            up.railway.app
+       ↓                                      ↓
+       └────────── HTTPS API ─────────────────┘
 ```
 
 | Layer | Tech | Host |
@@ -35,9 +37,9 @@ https://github.com/                 https://github.com/
 ```bash
 git clone https://github.com/hijrahassalam/vue-ecommerce-store.git
 cd vue-ecommerce-store
-npm install
+pnpm install
 cp .env.example .env   # optional — defaults to production API
-npm run dev
+pnpm run dev
 ```
 
 Open [http://localhost:5173](http://localhost:5173)
@@ -51,6 +53,7 @@ Open [http://localhost:5173](http://localhost:5173)
 ![Pinia](https://img.shields.io/badge/Pinia-FFD859?style=flat-square&logo=pinia&logoColor=black)
 ![Vite](https://img.shields.io/badge/Vite-646CFF?style=flat-square&logo=vite&logoColor=white)
 ![Netlify](https://img.shields.io/badge/Netlify-00C7B7?style=flat-square&logo=netlify&logoColor=white)
+![pnpm](https://img.shields.io/badge/pnpm-F69220?style=flat-square&logo=pnpm&logoColor=white)
 
 ---
 
@@ -58,77 +61,47 @@ Open [http://localhost:5173](http://localhost:5173)
 
 ```
 src/
-├── components/         # Reusable UI components
-│   ├── AppHeader.vue
+├── components/
+│   ├── AppHeader.vue      # Logo, nav, cart badge
 │   ├── AppFooter.vue
-│   └── ProductCard.vue
-├── views/              # Page components
+│   └── ProductCard.vue    # Hover effects + add-to-cart
+├── views/
 │   ├── HomeView.vue
-│   ├── ProductsView.vue
+│   ├── ProductsView.vue   # Search + pagination
 │   ├── ProductDetailView.vue
 │   ├── CartView.vue
-│   └── CheckoutView.vue
-├── stores/             # Pinia state management
-│   ├── products.js
-│   └── cart.js
+│   ├── CheckoutView.vue   # Stripe redirect
+│   └── OrderSuccessView.vue
+├── stores/
+│   ├── products.js        # fetchProducts + search + pagination
+│   └── cart.js            # localStorage persistence
 ├── services/
-│   └── api.js          # Axios client + interceptors
+│   └── api.js             # Axios + base URL config
 ├── router/
-│   └── index.js        # Vue Router config
-├── App.vue
-├── main.js
-└── style.css           # Tailwind CSS + custom styles
+│   └── index.js           # Routes + navigation guards
+└── main.js
 ```
 
 ---
 
-## 🔌 API Endpoints (Backend)
+## ✨ Features
 
-Base URL: `https://laravel-ecommerce-api-production.up.railway.app/api`
+- Product catalog with search & pagination
+- Persistent cart (localStorage)
+- Stripe checkout flow
+- Order confirmation
+- Dark theme UI
+- Mobile responsive
+- API fallback to production backend
+
+---
+
+## 🔑 API Endpoints (Backend)
 
 | Method | Endpoint | Description |
 |---|---|---|
-| `GET` | `/products` | List products (paginated) |
-| `GET` | `/products/{id}` | Product detail |
-| `GET` | `/cart` | Get cart |
-| `POST` | `/cart/items` | Add to cart |
-| `PUT` | `/cart/items/{id}` | Update quantity |
-| `DELETE` | `/cart/items/{id}` | Remove item |
-| `POST` | `/checkout` | Create Stripe session |
-
----
-
-## 📦 Features
-
-- 🛒 Shopping cart with quantity management
-- 🔍 Product listing with pagination
-- 💳 Stripe checkout integration
-- 🎨 Dark theme UI with glassmorphism
-- ✨ Page transitions and micro-animations
-- 📱 Fully responsive design
-- 🔄 Real-time cart sync
-
----
-
-## 🌙 Design System
-
-- **Theme:** Dark (zinc-950 base `#09090b`)
-- **Primary:** Indigo `#6366f1`
-- **Accent:** Pink `#f472b6`
-- **Font Display:** Space Grotesk
-- **Font Body:** Inter
-
----
-
-## 🔗 Related Projects
-
-| Project | Description | Live |
-|---|---|---|
-| [laravel-ecommerce-api](https://github.com/hijrahassalam/laravel-ecommerce-api) | Backend REST API | [railway.app](https://laravel-ecommerce-api-production.up.railway.app/api/products) |
-| [vue-ecommerce-store](https://github.com/hijrahassalam/vue-ecommerce-store) | Frontend SPA | [netlify.app](https://vue-ecommerce-store-fe.netlify.app) |
-
----
-
-## 👤 Author
-
-**Hijrah Assalam** — [hijrahassalam.com](https://hijrahassalam.com) · [GitHub](https://github.com/hijrahassalam)
+| GET | `/api/products` | List products (search, pagination) |
+| GET | `/api/products/:id` | Single product |
+| POST | `/api/orders` | Create order |
+| GET | `/api/orders/:id` | Get order status |
+| POST | `/api/checkout` | Stripe payment intent |
