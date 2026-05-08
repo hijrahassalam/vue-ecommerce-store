@@ -7,7 +7,6 @@
       <RouterLink to="/products" class="btn-primary inline-block">Shop Now</RouterLink>
     </div>
     <div v-else>
-      <!-- Order Summary -->
       <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100 mb-6">
         <h2 class="font-semibold text-gray-900 mb-4">Order Summary</h2>
         <div class="space-y-2 mb-4">
@@ -21,19 +20,11 @@
           <span class="font-bold text-xl text-indigo-600">{{ cartStore.formattedSubtotal }}</span>
         </div>
       </div>
-
-      <!-- Checkout Button -->
-      <button
-        @click="handleCheckout"
-        :disabled="processing"
-        class="btn-primary w-full text-center disabled:opacity-50 disabled:cursor-not-allowed"
-      >
+      <button @click="handleCheckout" :disabled="processing" class="btn-primary w-full text-center disabled:opacity-50 disabled:cursor-not-allowed">
         {{ processing ? 'Processing...' : `Pay ${cartStore.formattedSubtotal}` }}
       </button>
       <p v-if="error" class="text-red-500 text-sm mt-3 text-center">{{ error }}</p>
-      <p class="text-center text-gray-400 text-xs mt-4">
-        Demo mode &middot; No real payment will be charged
-      </p>
+      <p class="text-center text-gray-400 text-xs mt-4">Demo mode &middot; No real payment will be charged</p>
     </div>
   </div>
 </template>
@@ -54,10 +45,9 @@ async function handleCheckout() {
   processing.value = true
   error.value = ''
   try {
-    const response = await api.post('/checkout')
-    const { stripe_url, order_id } = response.data.data
+    const res = await api.post('/checkout')
+    const { stripe_url, order_id } = res.data.data
     localStorage.setItem('last_order_id', order_id)
-    // Redirect to Stripe or success
     if (stripe_url && !stripe_url.includes('mock')) {
       window.location.href = stripe_url
     } else {
@@ -71,14 +61,6 @@ async function handleCheckout() {
   }
 }
 
-function formatPrice(price) {
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-  }).format(price)
-}
-
-onMounted(() => {
-  cartStore.fetchCart()
-})
+function formatPrice(price) { return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(price) }
+onMounted(() => { cartStore.fetchCart() })
 </script>
