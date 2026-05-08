@@ -33,17 +33,8 @@
 </template>
 
 <script setup>
-defineProps({
-  product: {
-    type: Object,
-    required: true,
-  },
-})
-
+defineProps({ product: { type: Object, required: true } })
 function formatPrice(price) {
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-  }).format(price)
+  return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(price)
 }
 </script>
